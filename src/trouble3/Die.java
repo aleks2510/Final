@@ -12,6 +12,8 @@ public class Die {
 	
 	static public void roll(){
 		roll = (int)(Math.random() * 6)+1;
+		if(roll == 6)
+		TestGui.southPanel.message.setIcon("Assets/Msg/msg4.png");
 	}
 	
 	static public int getRoll(){
