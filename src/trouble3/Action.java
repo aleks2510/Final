@@ -93,29 +93,34 @@ class DieButtonListener implements ActionListener{
 class Turn {
 	static int turnCounter = 0;
 	static Player currentPlayer;
-	
+	static SidePanel currentPlayerPanel;
 	static void nextTurn(){
 		//increment the turnCounter
 		if(Die.getRoll() != 6)
 			turnCounter++;
 		//set new currentPlayer
 		currentPlayer = TestGUI.players[turnCounter % 2];
-		
+		if(turnCounter % 2 == 0){
+			currentPlayerPanel = TestGUI.eastPanel;
+		}
+		else{
+			currentPlayerPanel = TestGUI.westPanel;
+		}
 		//move the RollPanel to the next players side
 		if(turnCounter % 2 == 0){
 			//remove from current player
-			TestGUI.eastPanel.remove(TestGUI.eastPanel.rollPanel);
+			TestGUI.eastPanel.rollPanel.setVisible(false);
 			TestGUI.eastPanel.repaint();
 			//add to the next player
-			TestGUI.westPanel.rollPanel = new RollPanel();
+			TestGUI.westPanel.rollPanel.setVisible(true);
 			TestGUI.westPanel.repaint();
 		}
 		else{
 			//remove from current player
-			TestGUI.westPanel.remove(TestGUI.westPanel.rollPanel);
+			TestGUI.westPanel.rollPanel.setVisible(false);
 			TestGUI.westPanel.repaint();
 			//add to the next player
-			TestGUI.eastPanel.rollPanel = new RollPanel();
+			TestGUI.eastPanel.rollPanel.setVisible(true);
 			TestGUI.eastPanel.repaint();
 		}
 		//end game display
