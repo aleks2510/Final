@@ -70,7 +70,6 @@ public class Player {
 		}
 		return false;
 	}
-	
 	//this will bring a piece onto the board
 	public void comeOut(Piece piece) {
 		piece.setOnBoard(true);
@@ -100,7 +99,6 @@ public class Player {
 		}
 		return false;
 	}
-	
 	
 	//this will check the conditions needed to move than move the piece if possible
 //	public boolean selectAndBring() {

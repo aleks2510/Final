@@ -1,7 +1,9 @@
 package trouble3;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -59,7 +61,7 @@ class DieButtonListener implements ActionListener{
 	int roll;
 	@Override
 	public void actionPerformed(ActionEvent e){
-		if(clickable){
+		//if(clickable){
 		//roll the die
 		Die.roll();
 		roll = Die.getRoll();
@@ -68,20 +70,21 @@ class DieButtonListener implements ActionListener{
 		TestGUI.southPanel.message.setText("Pick a piece to move by clicking the icon of the piece.");
 		//make clickable PieceButtons
 		pieceButtonsClickable(true);
-		//make unclickable DieButton
-		Turn.currentPlayerPanel.rollPanel.dieButton.clickable = false;
+		TestGUI.eastPanel.rollPanel.dieButton.clickable = false;
 		//display the numberlabel
-		
-		}
-		else {
-			//write message, not available, msg0
+		ImageIcon number = Die.getIcon();
+		TestGUI.eastPanel.rollPanel.rollValueLabel.setIcon(number);
+		TestGUI.eastPanel.repaint();
+		TestGUI.southPanel.repaint();
+		//}
+	/*	else {
 			
-		}
+			//write message, not available, msg0
+		}*/
 	}
 	
 	void pieceButtonsClickable(boolean state){
 		//change the curentplayers pieceButtons to clickable
-		
 		
 	}
 	
@@ -96,27 +99,29 @@ class Turn {
 	static Player currentPlayer;
 	static SidePanel currentPlayerPanel;
 	
-	static void nextTurn(){
+	static public void update(){
+		//set new currentPlayer
+				currentPlayer = TestGUI.players[turnCounter % 2];
+				if(turnCounter % 2 == 0){
+					currentPlayerPanel = TestGUI.eastPanel;
+				}
+				else{
+					currentPlayerPanel = TestGUI.westPanel;
+				}
+	}
+	
+	static public void nextTurn(){
 		//increment the turnCounter
 		if(Die.getRoll() != 6)
 			turnCounter++;
-		//set new currentPlayer
-		currentPlayer = TestGUI.players[turnCounter % 2];
-		if(turnCounter % 2 == 0){
-			currentPlayerPanel = TestGUI.eastPanel;
-		}
-		else{
-			currentPlayerPanel = TestGUI.westPanel;
-		}
-		
-		
+		update();
 		//move the RollPanel to the next players side
-		if(turnCounter % 2 == 0){
+		/*if(turnCounter % 2 == 0){
 			//remove from current player
 			TestGUI.eastPanel.rollPanel.setVisible(false);
 			TestGUI.eastPanel.repaint();
 			//add to the next player
-			TestGUI.westPanel.rollPanel.setVisible(true);
+			TestGUI.westPanel.rollPanel.setVisible(false);
 			TestGUI.westPanel.repaint();
 		}
 		else{
@@ -124,9 +129,9 @@ class Turn {
 			TestGUI.westPanel.rollPanel.setVisible(false);
 			TestGUI.westPanel.repaint();
 			//add to the next player
-			TestGUI.eastPanel.rollPanel.setVisible(true);
+			TestGUI.eastPanel.rollPanel.setVisible(false);
 			TestGUI.eastPanel.repaint();
-		}
+		}*/
 		//end game display
 		
 	}
@@ -138,4 +143,3 @@ class Turn {
 	}
 	
 }
-

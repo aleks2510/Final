@@ -1,5 +1,6 @@
 package trouble3;
 import javax.swing.*;
+import java.awt.event.*;
 
 import java.awt.*;
 public class TestGUI {
@@ -32,11 +33,9 @@ public class TestGUI {
 		frame.add(westPanel, BorderLayout.WEST);
 		frame.add(southPanel, BorderLayout.SOUTH);
 		frame.add(centerPanel, BorderLayout.CENTER);
-		
-		Turn.nextTurn();
+	
 		frame.setVisible(true);
-                
-                int turnCounter = 0;
+		Turn.nextTurn();        
                 
 
 	}
@@ -74,8 +73,7 @@ class SidePanel extends JPanel{
 	
 	playerPanel = new PlayerPanel(player);
 	rollPanel = new RollPanel();
-	rollPanel.setVisible(false);
-	
+	//rollPanel.setVisible(false);
 	add(playerPanel, BorderLayout.NORTH);
 	add(rollPanel, BorderLayout.CENTER);
 	setBackground(Color.BLACK);
@@ -106,7 +104,7 @@ class SidePanel extends JPanel{
 				for(int i = 0; i < player.piece.length; i++){
 					pieceButton[i] = new IconButton(player.piece[i].buttonID);
 					pieceButton[i].addActionListener(new PieceButtonListener(player.piece[i]));
-					pieceButton[i].setPressedIcon(player.piece[i].clickedID);
+				pieceButton[i].setPressedIcon(player.piece[i].clickedID);
 					pieceButton[i].setRolloverIcon(player.piece[i].mouseOverID);
 					add(pieceButton[i]);
 				}
@@ -118,11 +116,34 @@ class SidePanel extends JPanel{
 	class RollPanel extends JPanel{
 		public JLabel rollValueLabel = new JLabel("Click To Roll");
 		public IconButton dieButton = new IconButton(new ImageIcon("Assets/Archive/die.png"));
-		
 		public RollPanel(){
+		
 			setLayout(new GridLayout(2,1,0,10));
+			dieButton.addActionListener(new ActionListener(){
+
+				@Override
+				public void actionPerformed(ActionEvent e){
+					//if(clickable){
+					//roll the die
+					Die.roll();
+					int roll = Die.getRoll();
+					System.out.println(roll);
+					//if(player has available moves)
+					//change the message
+					TestGUI.southPanel.message.setText("Pick a piece to move by clicking the icon of the piece.");
+					//make clickable PieceButtons
+					//pieceButtonsClickable(true);
+					TestGUI.eastPanel.rollPanel.dieButton.clickable = false;
+					//display the numberlabel
+					ImageIcon number = Die.getIcon();
+					TestGUI.eastPanel.rollPanel.rollValueLabel.setIcon(number);
+					TestGUI.eastPanel.repaint();
+					TestGUI.southPanel.repaint();
+				}
+			});
 			add(dieButton);
 			add(rollValueLabel);
+			
 			rollValueLabel.setHorizontalAlignment(AbstractButton.CENTER);
 			rollValueLabel.setVerticalAlignment(AbstractButton.TOP);
 			setBackground(Color.BLACK);
@@ -131,7 +152,6 @@ class SidePanel extends JPanel{
 
 class IconButton extends JButton{
 	public boolean clickable;
-	
 	public IconButton(ImageIcon icon){
 		super(icon);
 		setBorder(null);

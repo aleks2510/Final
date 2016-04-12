@@ -1,6 +1,7 @@
 package trouble3;
 import javax.swing.ImageIcon;
 import java.awt.*;
+
 public class Piece {
 	//default ID/display of the piece
 	ImageIcon boardID = new ImageIcon("Assets/Floor/floor.png");

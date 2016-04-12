@@ -18,7 +18,7 @@ public class Die {
 		return roll;
 	}
 	
-	public ImageIcon getIcon(){
+	static public ImageIcon getIcon(){
 		ImageIcon number = new ImageIcon("Assets/Numbers/" + roll + ".png");
 		return number;//the image of the number
 	}
