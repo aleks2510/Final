@@ -52,7 +52,7 @@ public class Player {
 				return false;
 			}
 			else if (Checks.whoIsThere(destination) == this) {
-				System.out.print("its me");
+				TestGui.southPanel.message.setIcon("Assets/Msg/msg1.png");
 				return true;
 			} else if(Checks.whoIsThere(destination) != this){
 				System.out.print("bump");
@@ -86,6 +86,7 @@ public class Player {
 			}
 			else if (Checks.whoIsThere(destination) == this) {
 				//invalid move message
+				TestGui.southPanel.message.setIcon("Assets/Msg/msg1.png");
 				return true;
 			} else if(Checks.whoIsThere(destination) != this){
 				System.out.print("bump");
