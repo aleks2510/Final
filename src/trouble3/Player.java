@@ -32,6 +32,12 @@ public class Player {
 		Board.blankSpace(piece.getIndex());
 		piece.setIndex(destination);
 		Board.Spaces[destination] = piece;
+		if(Turn.winCheck()){
+			//has won method
+		}
+		else{
+			Turn.nextTurn();
+		}
 	}
 	//this will check the conditions needed to move than move the piece if possible
 	public boolean checkAndMove(int roll, Piece piece) {
@@ -64,13 +70,36 @@ public class Player {
 		}
 		return false;
 	}
+	
 	//this will bring a piece onto the board
 	public void comeOut(Piece piece) {
 		piece.setOnBoard(true);
 		Board.Spaces[piece.getIndex()] = piece;
+		Turn.nextTurn();
 	}
 	
 	// need to write a checkAndMove method
+	public boolean checkAndComeOut(int roll, Piece piece) {
+		int destination = Checks.destinationCheck(roll + piece.getIndex());
+		if(!piece.isOnBoard()){
+			if (Checks.destinationFree(destination)){
+				comeOut(piece); ///change
+			}
+			else if (Checks.whoIsThere(destination) == this) {
+				//invalid move message
+				return true;
+			} else if(Checks.whoIsThere(destination) != this){
+				System.out.print("bump");
+				Board.Spaces[destination].bumped();
+				comeOut(piece);
+				return false;
+			}
+		}
+		else{
+			System.out.print("That piece is not on the board.");
+		}
+		return false;
+	}
 	
 	
 	//this will check the conditions needed to move than move the piece if possible

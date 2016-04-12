@@ -1,6 +1,6 @@
 package trouble3;
 
-import javax.swing.ImageIcon;
+import javax.swing.*;
 
 public class Die {
 	static boolean hasRolled = false;

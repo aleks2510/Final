@@ -32,6 +32,8 @@ public class TestGUI {
 		frame.add(westPanel, BorderLayout.WEST);
 		frame.add(southPanel, BorderLayout.SOUTH);
 		frame.add(centerPanel, BorderLayout.CENTER);
+		
+		Turn.nextTurn();
 		frame.setVisible(true);
                 
                 int turnCounter = 0;
@@ -72,6 +74,7 @@ class SidePanel extends JPanel{
 	
 	playerPanel = new PlayerPanel(player);
 	rollPanel = new RollPanel();
+	rollPanel.setVisible(false);
 	
 	add(playerPanel, BorderLayout.NORTH);
 	add(rollPanel, BorderLayout.CENTER);
@@ -103,8 +106,8 @@ class SidePanel extends JPanel{
 				for(int i = 0; i < player.piece.length; i++){
 					pieceButton[i] = new IconButton(player.piece[i].buttonID);
 					pieceButton[i].addActionListener(new PieceButtonListener(player.piece[i]));
-					//add mouse over effect
-					//add clicked effect
+					pieceButton[i].setPressedIcon(player.piece[i].clickedID);
+					pieceButton[i].setRolloverIcon(player.piece[i].mouseOverID);
 					add(pieceButton[i]);
 				}
 			}
@@ -113,18 +116,22 @@ class SidePanel extends JPanel{
 		}
 	}
 	class RollPanel extends JPanel{
+		public JLabel rollValueLabel = new JLabel("Click To Roll");
+		public IconButton dieButton = new IconButton(new ImageIcon("Assets/Archive/die.png"));
+		
 		public RollPanel(){
-			JPanel rollValueLabel = new JPanel();
 			setLayout(new GridLayout(2,1,0,10));
-			add(new IconButton(new ImageIcon("Assets/Archive/die.png")));
+			add(dieButton);
 			add(rollValueLabel);
-//			rollValueLabel.setHorizontalAlignment(AbstractButton.CENTER);
-//			rollValueLabel.setVerticalAlignment(AbstractButton.TOP);
+			rollValueLabel.setHorizontalAlignment(AbstractButton.CENTER);
+			rollValueLabel.setVerticalAlignment(AbstractButton.TOP);
 			setBackground(Color.BLACK);
 		}
 	}
 
 class IconButton extends JButton{
+	public boolean clickable;
+	
 	public IconButton(ImageIcon icon){
 		super(icon);
 		setBorder(null);

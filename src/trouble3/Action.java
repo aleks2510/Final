@@ -3,7 +3,6 @@ package trouble3;
 import java.awt.*;
 import java.awt.event.*;
 
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 public class Action {
@@ -70,15 +69,19 @@ class DieButtonListener implements ActionListener{
 		//make clickable PieceButtons
 		pieceButtonsClickable(true);
 		//make unclickable DieButton
+		Turn.currentPlayerPanel.rollPanel.dieButton.clickable = false;
+		//display the numberlabel
 		
-		
-		//MARK:Im WORKING HERE ALEKS
-		TestGUI.westPanel.rollPanel.add(new ImageIcon(""));
+		}
+		else {
+			//write message, not available, msg0
+			
 		}
 	}
 	
 	void pieceButtonsClickable(boolean state){
 		//change the curentplayers pieceButtons to clickable
+		
 		
 	}
 	
@@ -91,6 +94,7 @@ class DieButtonListener implements ActionListener{
 class Turn {
 	static int turnCounter = 0;
 	static Player currentPlayer;
+	static SidePanel currentPlayerPanel;
 	
 	static void nextTurn(){
 		//increment the turnCounter
@@ -98,22 +102,29 @@ class Turn {
 			turnCounter++;
 		//set new currentPlayer
 		currentPlayer = TestGUI.players[turnCounter % 2];
+		if(turnCounter % 2 == 0){
+			currentPlayerPanel = TestGUI.eastPanel;
+		}
+		else{
+			currentPlayerPanel = TestGUI.westPanel;
+		}
+		
 		
 		//move the RollPanel to the next players side
 		if(turnCounter % 2 == 0){
 			//remove from current player
-			TestGUI.eastPanel.remove(TestGUI.eastPanel.rollPanel);
+			TestGUI.eastPanel.rollPanel.setVisible(false);
 			TestGUI.eastPanel.repaint();
 			//add to the next player
-			TestGUI.westPanel.rollPanel = new RollPanel();
+			TestGUI.westPanel.rollPanel.setVisible(true);
 			TestGUI.westPanel.repaint();
 		}
 		else{
 			//remove from current player
-			TestGUI.westPanel.remove(TestGUI.westPanel.rollPanel);
+			TestGUI.westPanel.rollPanel.setVisible(false);
 			TestGUI.westPanel.repaint();
 			//add to the next player
-			TestGUI.eastPanel.rollPanel = new RollPanel();
+			TestGUI.eastPanel.rollPanel.setVisible(true);
 			TestGUI.eastPanel.repaint();
 		}
 		//end game display
