@@ -50,7 +50,7 @@ class PieceButtonListener implements ActionListener{
 		}
 		else{
 			//update message
-			TestGUI.southPanel.message.setText("Roll First");
+			TestGUI.southPanel.message.setIcon(new ImageIcon("Assets/Msg/msg0.png");
 		}
 	}
 }
