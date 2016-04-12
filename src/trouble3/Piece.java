@@ -25,13 +25,13 @@ public class Piece {
 			if(pieceID == 0){
 				this.boardID = new ImageIcon("Assets/Floor/lfloor.png");
 				this.buttonID = new ImageIcon("Assets/Icons/luke.png");
-				this.mouseOverID = new ImageIcon("Assets/Icons/lukeMo");
+				this.mouseOverID = new ImageIcon("Assets/Icons/lukeMo.png");
 				this.clickedID = new ImageIcon("Assets/Icons/lukeCk.png");
 			}
 			else{
 				this.boardID = new ImageIcon("Assets/Floor/rfloor.png");
 				this.buttonID = new ImageIcon("Assets/Icons/r2d2.png");
-				this.mouseOverID = new ImageIcon("Assets/Icons/r2d2Mo");
+				this.mouseOverID = new ImageIcon("Assets/Icons/r2d2Mo.png");
 				this.clickedID = new ImageIcon("Assets/Icons/r2d2Ck.png");
 			}
 		}
@@ -39,13 +39,13 @@ public class Piece {
 			if(pieceID == 0){
 				this.boardID = new ImageIcon("Assets/Floor/dfloor.png");
 				this.buttonID = new ImageIcon("Assets/Icons/darth.png");
-				this.mouseOverID = new ImageIcon("Assets/Icons/darthMo");
+				this.mouseOverID = new ImageIcon("Assets/Icons/darthMo.png");
 				this.clickedID = new ImageIcon("Assets/Icons/darthCk.png");	
 			}
 			else{
 				this.boardID = new ImageIcon("Assets/Floor/tfloor.png");
 				this.buttonID = new ImageIcon("Assets/Icons/trooper.png");
-				this.mouseOverID = new ImageIcon("Assets/Icons/trooperMo");
+				this.mouseOverID = new ImageIcon("Assets/Icons/trooperMo.png");
 				this.clickedID = new ImageIcon("Assets/Icons/trooperCk.png");	
 			}
 		}
