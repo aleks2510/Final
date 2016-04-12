@@ -3,7 +3,7 @@ package trouble3;
 import java.awt.*;
 import java.awt.event.*;
 
-import javax.swing.ImageIcon;
+
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 public class Action {
@@ -69,11 +69,13 @@ class DieButtonListener implements ActionListener{
 		TestGUI.southPanel.message.setText("Pick a piece to move by clicking the icon of the piece.");
 		//make clickable PieceButtons
 		pieceButtonsClickable(true);
-		//make unclickable DieButton
-		
-		
-		//MARK:Im WORKING HERE ALEKS
-		TestGUI.westPanel.rollPanel.add(new ImageIcon(""));
+		Turn.currentPlayerPanel.rollPanel.dieButton.clickable = false;
+		//display the numberlabel
+	
+		}
+		else {
+			
+			//write message, not available, msg0
 		}
 	}
 	
