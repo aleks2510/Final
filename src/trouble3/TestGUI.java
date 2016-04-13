@@ -32,7 +32,19 @@ public class TestGUI {
 		frame.add(southPanel, BorderLayout.SOUTH);// Adding panel to frame
 		frame.add(centerPlayBoard, BorderLayout.CENTER);
 		frame.setVisible(true);// Setting to visible.
-
+		// Here we are creating the frame that will prompt the instructions for
+		// the game
+		JFrame rulesFrame = new JFrame();
+		JPanel rulesPanel = new JPanel();
+		JLabel myLabel = new JLabel();
+		// The text is in html and we use the .setText method to read it and
+		// display it.
+		myLabel.setText("<html><p>Welcome to Star Trouble Game<br /> 1. Who goes first: Players roll the die, the player that rolls the first six will make the first move.<br />2. Movement: players must roll a 6 to move one of their 2 pieces on to the starting area.<br />3. Conditions:<br />Players cannot have more than one piece on the same location at a time.<br />Landing on a space occupied by another player's piece will bump the other player's piece home.<br />If a 6 is rolled the player gets to roll again.<br />Winner: The winner will be the player who gets both pieces into the finished area.</p></html>");
+		rulesPanel.add(myLabel);
+		rulesFrame.add(rulesPanel);
+		rulesFrame.setSize(620, 200);
+		rulesFrame.setLocationRelativeTo(null);
+		rulesFrame.setVisible(true);
 		Turn.nextTurn();
 	}
 
