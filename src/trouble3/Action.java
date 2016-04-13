@@ -3,90 +3,112 @@ package trouble3;
 import java.awt.*;
 import java.awt.event.*;
 
-
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
 public class Action {
-	//crates the player object for each player
-	public static Player[] createPlayers(){
+	// Creating the player object for each player
+	public static Player[] createPlayers() {
 		Player[] players = new Player[2];
-		//System.out.print("Enter three letter nick name of Player1: ");
-		players[0] = new Player(getName(), 0);
-		//System.out.print("Enter three letter nick name of Player2: ");
-		players[1] = new Player(getName(), 18);
+		// System.out.print("Enter three letter nick name of Player1: ");
+		players[0] = new Player(getName(), 18);
+		// System.out.print("Enter three letter nick name of Player2: ");
+		players[1] = new Player(getName(), 0);
 		return players;
 	}
-	//trunkates the name to 3 char
-	private static String getName(){
+
+	// Truncates the name to 3 char
+	private static String getName() {
 		return JOptionPane.showInputDialog("Enter player name:");
 	}
+
+	public static void pieceButtonsClickable(boolean state) {
+		// Change the curentplayers pieceButtons to clickable
+		for (int i = 0; i < Turn.currentPlayerPanel.playerPanel.peices.pieceButton.length; i++) {
+			Turn.currentPlayerPanel.playerPanel.peices.pieceButton[i].clickable = state;
+		}
+	}
+
+	public static void rollButtonClickable(boolean state) {
+		// Change the curentplayers pieceButtons to clickable
+		Turn.currentPlayerPanel.rollPanel.dieButton.clickable = state;
+	}
+
 }
 
-class PieceButtonListener implements ActionListener{
+class PieceButtonListener implements ActionListener {
 	Piece clickedPiece;
 	Player player;
-	boolean clickable = false;
-	public PieceButtonListener(Piece piece){
+
+	public PieceButtonListener(Piece piece) {
 		clickedPiece = piece;
 		player = piece.getOwner();
 	}
+
 	@Override
-	public void actionPerformed(ActionEvent e){
-		//if clickable
-		if(clickable){
-			//check if piece is on the board
-			if(clickedPiece.isOnBoard()){
-				//move the piece
-				player.checkAndMove(Die.getRoll(), clickedPiece);
-				//make unclickable
-				clickable = false;
+	public void actionPerformed(ActionEvent e) {
+		// If clickable
+		if (Turn.currentPlayerPanel.playerPanel.peices.pieceButton[0].clickable
+				|| Turn.currentPlayerPanel.playerPanel.peices.pieceButton[1].clickable) {
+			if (!clickedPiece.isFinished()) { // the piece is unable to move
+												// either if one finishes.
+				// Move the piece
+				if (Turn.currentPlayer == player) {
+					player.checkAndMove(Die.getRoll(), clickedPiece,
+							(IconButton) e.getSource());
+					// Put the piece on the board
+					player.checkAndComeOut(Die.getRoll(), clickedPiece);
+				} else {
+					System.out.println("ITS NOT YOUR TURN!");
+				}
+			} else {
+				// Update message
+				System.out.println("That Piece is done already!");
 			}
-			else if(!clickedPiece.isOnBoard()){
-				//put the piece on the board
-				player.comeOut(clickedPiece);
-				//make unclickable
-				clickable = false;
-			}
-		}
-		else{
-			//update message
-			TestGUI.southPanel.message.setIcon(new ImageIcon("Assets/Msg/msg0.png");
+		} else {
+			TestGUI.southPanel.message.setIcon(new ImageIcon(
+					"Assets/Msg/msg0.png"));
 		}
 	}
 }
 
-class DieButtonListener implements ActionListener{
-	boolean clickable = false;
+class DieButtonListener implements ActionListener {
 	int roll;
+
+	// The wrong player gets an extra turn when a 6 is rolled.
 	@Override
-	public void actionPerformed(ActionEvent e){
-		if(clickable){
-		//roll the die
-		Die.roll();
-		roll = Die.getRoll();
-		//if(player has available moves)
-		//change the message
-		TestGUI.southPanel.message.setText("Pick a piece to move by clicking the icon of the piece.");
-		//make clickable PieceButtons
-		pieceButtonsClickable(true);
-		Turn.currentPlayerPanel.rollPanel.dieButton.clickable = false;
-		//display the numberlabel
-	
+	public void actionPerformed(ActionEvent e) {
+		if (Turn.currentPlayerPanel.rollPanel.dieButton.clickable) {
+			// Roll the die
+			Die.roll();
+			roll = Die.getRoll();
+			System.out.println(roll);
+			// Checks if the player can move
+			if (Checks.availableMoves()) {
+				// Change the message
+				TestGUI.southPanel.message.setIcon(new ImageIcon(
+						"Assets/Msg/msg3.png"));
+				// Make clickable PieceButtons
+				Action.pieceButtonsClickable(true);
+				// RollButtonClickable(false);
+				Action.rollButtonClickable(false);
+				// Display the numberlabel
+				Turn.currentPlayerPanel.rollPanel.rollValueLabel.setIcon(Die
+						.getIcon());
+				// Clear last players button
+				Turn.currentPlayerPanel.rollPanel.dieButton.setVisible(false);
+			} else {
+				// Write message, no available moves, msg1, next turn
+				TestGUI.southPanel.message.setIcon(new ImageIcon(
+						"Assets/Msg/msg1.png"));
+				Turn.currentPlayerPanel.rollPanel.dieButton.setVisible(false);
+				Turn.nextTurn();
+			}
+		} else {
+			TestGUI.southPanel.message.setIcon(new ImageIcon(
+					"Assets/Msg/msg3.png"));
 		}
-		else {
-			
-			//write message, not available, msg0
-		}
-	}
-	
-	void pieceButtonsClickable(boolean state){
-		//change the curentplayers pieceButtons to clickable
-		
-	}
-	
-	void rollButtonClickable(boolean state){
-		//change the curentplayers pieceButtons to clickable
-		
 	}
 }
 
@@ -94,44 +116,50 @@ class Turn {
 	static int turnCounter = 0;
 	static Player currentPlayer;
 	static SidePanel currentPlayerPanel;
-	static void nextTurn(){
-		//increment the turnCounter
-		if(Die.getRoll() != 6)
+
+	static void nextTurn() {
+		// Increment the turnCounter
+		System.out.println("NextTurn.");
+		// Update the current player and panel
+		update();
+		// Go again if you rolled a 6
+		if (Die.getRoll() != 6) {
 			turnCounter++;
-		//set new currentPlayer
-		currentPlayer = TestGUI.players[turnCounter % 2];
-		if(turnCounter % 2 == 0){
-			currentPlayerPanel = TestGUI.eastPanel;
 		}
-		else{
+		update();
+		// Clear the die label
+		Turn.currentPlayerPanel.rollPanel.dieButton.setVisible(true);
+		// Update the board
+		TestGUI.centerPlayBoard.updateSpaces();
+		// Update the southPanel Message
+		if (Die.getRoll() != 6)
+			TestGUI.southPanel.message.setIcon(new ImageIcon(
+					"Assets/Msg/msg0.png"));
+		else
+			TestGUI.southPanel.message.setIcon(new ImageIcon(
+					"Assets/Msg/msg4.png"));
+		// Setting buttons clickability
+		Action.rollButtonClickable(true);
+		Action.pieceButtonsClickable(false);
+		// Move the RollPanel to the next players side
+		currentPlayerPanel.rollPanel.setVisible(true);
+		// End game display
+	}
+
+	public static void update() {
+		// Setting new currentPlayer
+		currentPlayer = TestGUI.players[turnCounter % 2];
+		if (turnCounter % 2 == 0) {
+			currentPlayerPanel = TestGUI.eastPanel;
+		} else {
 			currentPlayerPanel = TestGUI.westPanel;
 		}
-		//move the RollPanel to the next players side
-		if(turnCounter % 2 == 0){
-			//remove from current player
-			TestGUI.eastPanel.rollPanel.setVisible(false);
-			TestGUI.eastPanel.repaint();
-			//add to the next player
-			TestGUI.westPanel.rollPanel.setVisible(true);
-			TestGUI.westPanel.repaint();
-		}
-		else{
-			//remove from current player
-			TestGUI.westPanel.rollPanel.setVisible(false);
-			TestGUI.westPanel.repaint();
-			//add to the next player
-			TestGUI.eastPanel.rollPanel.setVisible(true);
-			TestGUI.eastPanel.repaint();
-		}
-		//end game display
-		
 	}
-	
-	static public boolean winCheck(){
-		if(currentPlayer.hasWon())
+
+	static public boolean winCheck() {
+		if (currentPlayer.hasWon())
 			return true;
 		return false;
 	}
-	
-}
 
+}

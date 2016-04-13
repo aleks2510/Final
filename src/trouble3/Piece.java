@@ -1,5 +1,6 @@
 package trouble3;
 import javax.swing.ImageIcon;
+
 import java.awt.*;
 public class Piece {
 	//default ID/display of the piece
@@ -66,13 +67,16 @@ public class Piece {
 	}
 	//the action of finishing the piece
 	public boolean finished() {
-		if (counter > 35) {
+		if (counter + Die.getRoll() >= 35) {
 			Board.blankSpace(index);
-			boardID = new ImageIcon("Assets/Archive/FloorP!.png");
+			TestGUI.centerPlayBoard.updateSpaces();
+			mouseOverID = new ImageIcon("Assets/Icons/complete.png");
+			clickedID = new ImageIcon("Assets/Icons/complete.png");
 			isFinished = true;
 			index = startPossition;
 			counter = 0;
 			onBoard = false ; 
+			Turn.nextTurn();
 			return true;
 		}
 		return false;
